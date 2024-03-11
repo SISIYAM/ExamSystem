@@ -125,7 +125,7 @@
 
           </li>
           <li class="sidebar-item ">
-            <a href="scripts.php" class='sidebar-link'>
+            <a href="scripts.php?index" class='sidebar-link'>
               <i class="bi bi-pencil-square"></i>
               <span>Evaluate Scripts</span>
             </a>

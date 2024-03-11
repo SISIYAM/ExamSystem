@@ -368,6 +368,96 @@ include './includes/login_required.php';
               }
               ?>
 
+              <?php
+                  $no = $i;
+                  $writtenQuestion = mysqli_query($con, "SELECT * FROM written_questions WHERE exam_id='$examId'");
+                  if(mysqli_num_rows($writtenQuestion) > 0)
+                  {
+                    ?>
+
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center alert alert-dark">
+                <h6 class="m-0 font-weight-bold text-light h4">Written Part</h6>
+
+              </div>
+              <?php 
+                    while($WrittenRow=mysqli_fetch_array($writtenQuestion)){
+                      $writtenQuestion_id = $WrittenRow['id'];
+                      $searchWrittenRecord = mysqli_query($con, "SELECT * FROM written_record WHERE exam_id='$examId' AND student_id='$student_id' AND question_id='$writtenQuestion_id'");
+                      if(mysqli_num_rows($searchWrittenRecord) > 0){
+                        $writtenRecordRow = mysqli_fetch_array($searchWrittenRecord);
+                        $writtenMark = $writtenRecordRow['mark'];
+                        $answeredImage = $writtenRecordRow['answered_image'];
+                      }else{
+                        $writtenMark = 0;
+                        $answeredImage = "";
+                      }
+                      ?>
+              <div class="card-body">
+                <h6 class="mb-2 p-1 d-inline bg-gradient-primary rounded text-light font-weight-bold"
+                  style="font-size:13px">Question : <?=$no?></h6>
+                <b class="" style="float: right;">Mark : <?php
+                if($writtenMark == 0){
+                  ?>
+                  <span class="text-danger"><?=$writtenMark?></span>
+                  <?php
+                }else{
+                  ?>
+                  <span class="text-success"><?=$writtenMark?></span>
+                  <?php
+                }
+                ?>
+                  /<?=$WrittenRow['mark']?></b>
+                <div class="form-group questionPart">
+                  <p for="" class="font-weight-bold text-dark mt-3"><?=$WrittenRow['question']?></p>
+
+                  <?php 
+                 if($answeredImage != ""){
+                  ?>
+                  <img src="./img/writtenAnswer/<?=$answeredImage?>" class="img-fluid" alt="Responsive image">
+                  <?php
+                 }else{
+                  ?>
+                  <b class="btn btn-light">Not Answered</b>
+                  <?php
+                 }
+                 ?>
+                  <?php
+                  if($WrittenRow['solution'] > 0){
+                    ?>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-lg-12 mb-4">
+                        <div class="card bg-light text-dark">
+                          <div class="card-body rounded" style="border:2px solid #2EAD1E">
+                            <span class="font-weight-bold text-dark">Solution:</span>
+                            <div class="solution">
+                              <?=$WrittenRow['solution']?>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <?php
+                  }
+                  ?>
+
+                </div>
+
+              </div>
+
+              <?php
+                  $no++;
+                    }
+                  
+                    ?>
+
+
+
+              <?php
+            }
+            ?>
+
             </div>
 
           </form>
